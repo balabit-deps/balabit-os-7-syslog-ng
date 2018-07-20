@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -e
+
+cd /source
+VERSION=`cat VERSION`
+USER=`whoami`
+RPMBUILD=/home/${USER}/rpmbuild
+RPMBUILD_SOURCES=$RPMBUILD/SOURCES
+
+cd /build
+mkdir -p $RPMBUILD_SOURCES
+cp  syslog-ng-${VERSION}.tar.gz $RPMBUILD_SOURCES
+
+rpmbuild -ta syslog-ng-${VERSION}.tar.gz
+mv $RPMBUILD/RPMS/*/*.rpm /build
+mv $RPMBUILD/SRPMS/*.rpm /build
+echo "Your rpms are in /build, also available on the host in \$(top_srcdir)/dbld/build"
